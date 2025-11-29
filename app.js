@@ -2,7 +2,7 @@ const API_URL = 'https://api.wordpress.org/themes/info/1.2/';
 const LIMIT = 60;
 let allThemes = [];
 let isFetching = false;
-let currentView = 'list';
+let currentView = 'grid';
 let currentSort = 'api_position';
 
 const app = document.getElementById('app');
