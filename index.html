@@ -1,181 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WordPress Theme Explorer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="tailwind-config.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-dYVXkQJQNtD1asIGqBbeLfao9SaleXWAhp2JTDL0S5w='; style-src 'self'; img-src 'self' https://ts.w.org https://themes.svn.wordpress.org https://i0.wp.com https://i1.wp.com https://i2.wp.com; connect-src https://api.wordpress.org; base-uri 'none'; object-src 'none'; form-action 'self'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Browse free themes from WordPress.org. Search by name or keyword, filter by features, compare details, and save your favorites.">
+  <meta name="theme-color" content="#f7f8f5">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Theme Explorer — Find your next WordPress theme">
+  <meta property="og:description" content="Browse free WordPress themes by name, subject, or feature. Try live previews and save the ones you like.">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="./">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Theme Explorer","description":"Search, filter, preview, compare, and save themes from the WordPress.org directory.","applicationCategory":"DesignApplication","operatingSystem":"Any","isAccessibleForFree":true}</script>
+  <title>Theme Explorer — Find your next WordPress theme</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
 </head>
-
-<body
-    class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen transition-colors duration-300">
-
-    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-indigo-500/10 rounded-full blur-3xl"></div>
-        <div class="absolute top-[20%] -right-[10%] w-[40%] h-[40%] bg-purple-500/10 rounded-full blur-3xl"></div>
-    </div>
-
-    <div id="app" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-
-        <header class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-            <div class="text-center md:text-left">
-                <h1
-                    class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 tracking-tight">
-                    WordPress Theme Explorer
-                </h1>
-                <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm md:text-base">
-                    Discover and analyze the best themes from the official directory.
-                </p>
-            </div>
-
-            <div
-                class="flex items-center gap-3 bg-white dark:bg-slate-800 p-1.5 rounded-full shadow-sm border border-slate-200 dark:border-slate-700">
-                <div class="flex bg-slate-100 dark:bg-slate-700 rounded-full p-1">
-                    <button id="view-list-btn" onclick="switchView('list')"
-                        class="p-2 rounded-full text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition-colors"
-                        title="List View">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                    <button id="view-grid-btn" onclick="switchView('grid')"
-                        class="p-2 rounded-full text-indigo-600 bg-white dark:bg-slate-600 shadow-sm dark:text-indigo-400 transition-all"
-                        title="Grid View">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="w-px h-6 bg-slate-200 dark:bg-slate-600"></div>
-
-                <button onclick="toggleDarkMode()"
-                    class="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700 transition-colors"
-                    title="Toggle Dark Mode">
-                    <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
-                        </path>
-                    </svg>
-                    <svg id="sun-icon" class="w-5 h-5 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
-                        </path>
-                    </svg>
-                </button>
-            </div>
-        </header>
-
-        <div class="sticky top-2 z-40 mb-4">
-            <div class="glass rounded-xl shadow-lg p-2 flex flex-col md:flex-row gap-2 transition-all duration-300">
-
-                <div class="relative flex-grow group">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </div>
-                    <input type="text" id="search-input" placeholder="Search themes (e.g., 'portfolio', 'astra')..."
-                        class="block w-full pl-11 pr-4 py-2 bg-transparent border-none text-slate-900 dark:text-white placeholder-slate-400 focus:ring-0 focus:outline-none text-sm"
-                        autocomplete="off">
-                </div>
-
-                <div class="flex gap-2">
-                    <div class="relative min-w-[140px]">
-                        <select id="sort-select"
-                            class="appearance-none w-full bg-slate-100 dark:bg-slate-700/50 border border-transparent text-slate-700 dark:text-slate-200 py-2 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer font-medium text-sm">
-                            <option value="api_position">Relevance</option>
-                            <option value="active_installs">Popularity</option>
-                            <option value="last_updated">Latest Update</option>
-                            <option value="downloaded">Downloads</option>
-                        </select>
-                        <div
-                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <button id="search-button"
-                        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 flex items-center gap-2 whitespace-nowrap text-sm">
-                        <span>Search</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex justify-between items-end mb-4 px-2">
-            <div>
-                <h2 id="results-title" class="text-xl font-bold text-slate-800 dark:text-white">Popular Themes</h2>
-                <p id="status-text" class="text-sm text-slate-500 dark:text-slate-400">Showing top results</p>
-            </div>
-            <div class="text-right">
-                <span id="theme-count"
-                    class="text-sm font-medium bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 px-3 py-1 rounded-full">
-                    0 Themes
-                </span>
-            </div>
-        </div>
-
-        <div id="content-area" class="min-h-[400px]">
-
-            <div id="loading-state" class="hidden py-20 text-center">
-                <div
-                    class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent">
-                </div>
-                <p class="mt-4 text-slate-500 dark:text-slate-400 font-medium animate-pulse">Discovering themes...</p>
-            </div>
-
-            <div id="empty-state" class="hidden py-20 text-center">
-                <div
-                    class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
-                    <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                        </path>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-medium text-slate-900 dark:text-white">No themes found</h3>
-                <p class="text-slate-500 dark:text-slate-400 max-w-xs mx-auto mt-1">Try adjusting your search terms or
-                    filters.</p>
-            </div>
-
-            <div id="list-view-container"
-                class="hidden bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-                <div
-                    class="grid list-grid-layout gap-4 py-4 px-6 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                    <span>Rank</span>
-                    <span>Preview</span>
-                    <span>Theme Details</span>
-                    <span class="text-right">Version</span>
-                    <span class="text-right">Updated</span>
-                    <span class="text-right">Installs</span>
-                    <span class="text-right">Downloads</span>
-                </div>
-                <div id="list-items" class="divide-y divide-slate-100 dark:divide-slate-700/50">
-                </div>
-            </div>
-
-            <div id="grid-view-container"
-                class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            </div>
-
-        </div>
-
-    </div>
-
-    <script src="app.js"></script>
+<body>
+  <a class="skip-link" href="#results">Skip to themes</a>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="./" aria-label="Theme Explorer home"><span class="brand-mark" aria-hidden="true">t.</span> Theme Explorer</a>
+    <div class="header-actions"><a href="https://wordpress.org/themes/" target="_blank" rel="noopener noreferrer" class="directory-link">WordPress.org directory <span aria-hidden="true">↗</span></a><button id="color-mode" class="icon-button" aria-label="Switch to dark mode" title="Switch color mode">◐</button></div>
+  </div></header>
+  <main class="shell">
+    <section class="intro" aria-labelledby="page-title"><p class="eyebrow"><span class="small-dot" aria-hidden="true"></span> FROM THE WORDPRESS.ORG DIRECTORY</p><h1 id="page-title">Find a theme for<br>your WordPress site.</h1><p class="intro-copy">Starting a blog, updating your site, or opening a shop?<br class="desktop-break"> Browse themes, try a preview, and save the ones you like.</p></section>
+    <section class="search-panel" aria-label="Find themes">
+      <form id="search-form" role="search"><label class="sr-only" for="search-input">Search WordPress themes</label><svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5" stroke-linecap="round"/></svg><input type="search" id="search-input" name="q" placeholder="Try “Astra” or “food blog”…" maxlength="200" autocomplete="off"><button class="primary-button" type="submit">Search themes <span aria-hidden="true">→</span></button></form>
+      <div class="quick-search" aria-label="Search by subject"><span>Browse by subject</span><button data-subject="blog">Blog</button><button data-subject="portfolio">Portfolio</button><button data-subject="e-commerce">Online store</button><button data-subject="photography">Photography</button></div>
+    </section>
+    <section id="results" aria-labelledby="results-title" tabindex="-1">
+      <div class="browse-bar"><nav class="browse-tabs" aria-label="Browse themes"><button data-browse="popular" aria-pressed="true">Popular</button><button data-browse="new" aria-pressed="false">Newest</button><button data-browse="updated" aria-pressed="false">Recently updated</button><button data-browse="featured" aria-pressed="false">Featured</button><button data-browse="saved" aria-pressed="false">Saved <span id="saved-count">0</span></button></nav><button id="filter-toggle" class="secondary-button" aria-expanded="false" aria-controls="filter-panel"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 17h16" stroke-linecap="round"/><circle cx="9" cy="7" r="2" fill="var(--surface)"/><circle cx="15" cy="17" r="2" fill="var(--surface)"/></svg> Filters <span id="filter-count" hidden></span></button></div>
+      <form id="filter-panel" class="filter-panel" hidden><div class="filter-heading"><div><h2>Filter themes</h2><p>Pick the features you want. Results will include all of them.</p></div><button type="button" id="clear-filters" class="text-button">Clear filters</button></div><div id="feature-groups" class="feature-groups"></div><div class="filter-bottom"><label for="author-input">Author username <input id="author-input" type="text" placeholder="e.g. wordpressdotorg" maxlength="100" autocomplete="off"></label><button type="submit" class="primary-button">Apply filters</button></div><p id="feature-status" class="subtle" hidden>We couldn’t load all the filters. These are the ones you can use for now.</p></form>
+      <div id="active-filters" class="active-filters" aria-label="Applied filters" hidden></div>
+      <div class="results-toolbar"><div><h2 id="results-title">Popular themes</h2><p id="status-text" role="status" aria-live="polite">Loading themes…</p></div><div class="results-controls"><label for="sort-select">On this page <select id="sort-select"><option value="directory">Directory order</option><option value="installs">Most installed</option><option value="rating">Highest rated</option><option value="updated">Last updated</option><option value="name">Name A–Z</option></select></label><div class="view-switch" role="group" aria-label="Results layout"><button id="view-grid" aria-label="Grid view" title="Grid view" aria-pressed="true"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></button><button id="view-list" aria-label="List view" title="List view" aria-pressed="false"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.1M4 12h.1M4 18h.1" stroke-linecap="round"/></svg></button></div></div></div>
+      <div id="loading-state" class="theme-grid skeleton-grid" aria-hidden="true"></div>
+      <div id="error-state" class="message-state" role="alert" hidden><span class="state-symbol" aria-hidden="true">↻</span><h3>We couldn’t load the themes</h3><p id="error-message">Check your connection and try again.</p><button id="retry-button" class="primary-button">Try again</button><a href="https://wordpress.org/themes/" target="_blank" rel="noopener noreferrer">Browse on WordPress.org ↗</a></div>
+      <div id="empty-state" class="message-state" hidden><span class="state-symbol" aria-hidden="true">⌕</span><h3 id="empty-title">No themes found</h3><p id="empty-copy">Try a different search or remove a filter.</p><button id="reset-search" class="secondary-button">Browse popular themes</button></div>
+      <div id="theme-results" class="theme-grid" aria-busy="true"></div>
+      <nav id="pagination" class="pagination" aria-label="Theme result pages" hidden><button id="previous-page" class="secondary-button">← Previous</button><span id="page-info"></span><button id="next-page" class="secondary-button">Next →</button></nav>
+    </section>
+    <aside class="directory-note"><span aria-hidden="true">ⓘ</span><p>All these themes have a free version on WordPress.org. Some authors also offer paid upgrades.</p></aside>
+    <section class="about" aria-labelledby="about-title"><h2 id="about-title">Before you choose</h2><p>A preview gives you a feel for a theme, but it will look different with your own content. Check the WordPress and PHP requirements in the theme details, then try it on your site. Found a few you like? Save them and compare before deciding.</p></section>
+  </main>
+  <footer class="site-footer shell"><span class="brand footer-brand"><span class="brand-mark" aria-hidden="true">t.</span> Theme Explorer</span><p>An independent project. Themes from <a href="https://wordpress.org/themes/" target="_blank" rel="noopener noreferrer">WordPress.org ↗</a></p><span class="footer-small">No account needed.</span></footer>
+  <div id="compare-bar" class="compare-bar" hidden><span id="compare-summary"></span><button id="compare-open" class="primary-button">Compare themes</button><button id="compare-clear" class="text-button">Clear</button></div>
+  <dialog id="theme-dialog" aria-labelledby="dialog-title"><div class="dialog-top"><span class="eyebrow">THEME DETAILS</span><button id="dialog-close" class="icon-button" aria-label="Close details">×</button></div><div id="dialog-content"></div></dialog>
+  <div id="announcement" class="sr-only" aria-live="polite"></div>
+  <noscript><p class="noscript">Enable JavaScript to search themes, or <a href="https://wordpress.org/themes/">browse the WordPress.org theme directory</a>.</p></noscript>
 </body>
-
 </html>
